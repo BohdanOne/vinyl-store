@@ -27,3 +27,6 @@ Stack: MongoDB, Express, Node.js.
 - Photo by Jamakassi on Unsplash
 - Photo by Clem Onojeghuo on Unsplash
 - portugalsiPhoto by Luana De Marco on Unsplash
+
+### Default avatar image:
+- Image by PanJoyCZ from Pixabay
