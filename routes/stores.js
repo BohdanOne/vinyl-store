@@ -1,6 +1,5 @@
 const express = require('express');
 const cloudinary = require('cloudinary');
-
 const geocoder = require('../helpers/geocoder');
 const upload = require('../middlewares/multer');
 
@@ -8,10 +7,7 @@ const Store = require('../models/store');
 
 const router = express.Router();
 
-// Search helper
-const escapeRegex = text => {
-  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-}
+const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 cloudinary.config({
   cloud_name: 'bohdan',
@@ -66,6 +62,17 @@ router.post('/', upload.single('image'), async (req, res) => {
   } catch(error) {
     // req.flash('error', error.message);
     console.log(error)
+    res.redirect('back');
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const store = await Store.findById(req.params.id);
+    const apiKey = process.env.GEOCODER_API_KEY;
+    res.render('stores/show', { store, apiKey });
+  } catch(error) {
+    console.log(error);
     res.redirect('back');
   }
 });

@@ -1,0 +1,50 @@
+<% include ../partials/header %>
+
+<div class="row">
+  <div class="col-sm-4 col-md-3 mt-4">
+    <div class="mb-3 list-group">
+      <li class="list-group-item active">Adress</li>
+      <li class="list-group-item">Opening hours</li>
+    </div>
+    <div id="map"></div>
+  </div>
+
+  <main class="col-sm-8 col-md-9 mt-4">
+    <div class="card">
+      <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
+      <div class="card-body">
+        <h3 class="card-title"><%= store.name %></h3>
+
+        <p><%= store.description %></p>
+
+      </div>
+    </div>
+  </main>
+  
+</div>
+
+<script>
+  function initMap() {
+    const lat = <%= store.lat %>;
+    const lng = <%= store.lng %>;
+    const center = {lat: lat, lng: lng };
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: center,
+        scrollwheel: false
+    });
+    const contentString = `
+      <h6><%= store.name %></h6>
+    `
+    const infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    const marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', () => infowindow.open(map, marker));
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= apiKey %>&callback=initMap"></script>
+<% include ../partials/footer %>
