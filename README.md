@@ -18,3 +18,12 @@ Browse and add your favorite record stores.
 
 Build simple full stack app.
 Stack: MongoDB, Express, Node.js.
+
+## Credits
+
+### Landing Page photos:
+- Photo by Juliane Mergener on Unsplash
+- Photo by Mick Haupt on Unsplash
+- Photo by Jamakassi on Unsplash
+- Photo by Clem Onojeghuo on Unsplash
+- Photo by Luana De Marco on Unsplash
