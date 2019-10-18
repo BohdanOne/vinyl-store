@@ -65,22 +65,22 @@ body {
 }
 
 .slideshow li:nth-child(1) {
-  background-image: url(/images/juliane-mergener-SdhDHV67mBU-unsplash-2.jpg)
+  background-image: url(/images/slide1.jpg);
 }
 .slideshow li:nth-child(2) {
-  background-image: url(/images/mick-haupt-v8M_wbLqcZU-unsplash-2.jpg);
+  background-image: url(/images/slide2.jpg);
   animation-delay: 10s;
 }
 .slideshow li:nth-child(3) {
-  background-image: url(/images/luana-de-marco-PF1l1F1hzoU-unsplash-2.jpg);
+  background-image: url(/images/slide3.jpg);
   animation-delay: 20s;
 }
 .slideshow li:nth-child(4) {
-  background-image: url(/images/jamakassi-wejxKZ-9IZg-unsplash-2.jpg);
+  background-image: url(/images/slide4.jpg);
   animation-delay: 30s;
 }
 .slideshow li:nth-child(5) {
-  background-image: url(/images/clem-onojeghuo-LSwYrs6E3Dg-unsplash-2.jpg);
+  background-image: url(/images/slide5.jpg);
   animation-delay: 40s;
 }
 
@@ -101,3 +101,38 @@ body {
   }
 }
 
+@media (min-width: 576px) {
+  .slideshow li:nth-child(1) {
+    background-image: url(/images/slide1_lg.jpg);
+  }
+  .slideshow li:nth-child(2) {
+    background-image: url(/images/slide2_lg.jpg);
+  }
+  .slideshow li:nth-child(3) {
+    background-image: url(/images/slide3_lg.jpg);
+  }
+  .slideshow li:nth-child(4) {
+    background-image: url(/images/slide4_lg.jpg);
+  }
+  .slideshow li:nth-child(5) {
+    background-image: url(/images/slide5_lg.jpg);
+  }
+}
+
+@media (min-width: 1200px) {
+  .slideshow li:nth-child(1) {
+    background-image: url(/images/slide1_xl.jpg);
+  }
+  .slideshow li:nth-child(2) {
+    background-image: url(/images/slide2_xl.jpg);
+  }
+  .slideshow li:nth-child(3) {
+    background-image: url(/images/slide3_xl.jpg);
+  }
+  .slideshow li:nth-child(4) {
+    background-image: url(/images/slide4_xl.jpg);
+  }
+  .slideshow li:nth-child(5) {
+    background-image: url(/images/slide5_xl.jpg);
+  }
+}
