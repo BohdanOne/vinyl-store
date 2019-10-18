@@ -1,5 +1,6 @@
 body {
   background-color: rgb(53, 51, 51);
+  font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
 #landing-header {
@@ -20,6 +21,21 @@ body {
 
 .button {
   background-color: rgba(0, 0, 0, .6);
+  border: 1px solid;
+  border-radius: 5px;
+  color: #17a2b8;
+  font-size: 20px;
+  line-height: 1.5;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition:
+    color .2s ease-in-out,
+    background-color .2s ease-in-out,
+    border-color .2s ease-in-out;
+}
+.button:hover {
+  color: #fff;
+  background-color: #17a2b8;
 }
 
 .slideshow {
