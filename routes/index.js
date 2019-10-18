@@ -1,11 +1,7 @@
 const express = require('express');
 
-const landingController = require('../controllers/landing');
-
 const router = express.Router();
 
-router
-  .route('/')
-  .get(landingController.getLanding);
+router.get('/', (req, res) => res.render('landing'));
 
 module.exports = router;

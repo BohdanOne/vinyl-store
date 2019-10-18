@@ -12,6 +12,7 @@ const methodOverride = require('method-override');
 const User = require('./models/user');
 
 const index = require('./routes/index');
+const stores = require('./routes/stores');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 })
 
 app.use(index);
+app.use('/stores', stores);
 
 app.use(morgan('tiny'));
 const PORT = process.env.PORT || 3000;

@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<header class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Vinyl Store</h1>
+    <p class="lead">Welcome to refined collection of best record stores around.</p>
+    <a class="btn btn-primary" href="/stores/new" role="button">Add New Store</a>
+    <form class="form-inline my-2" action="/stores" method="GET">
+      <input class="form-control mr-sm-2" type="search" name="search" placeholder="Find Store.." aria-label="Search">
+      <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</header>
+
+<main class="row text-center">
+    <% stores.forEach(store => { %>
+      <div class="col-md-3 col-sm-6">
+        <div class="card m-2">
+          <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
+          <div class="card-body">
+            <h4 class="card-title"><%= store.name %></h4>
+            <a href="/stores/<%= store._id %>" class="btn btn-primary">More Info</a>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+</main>
+
+<% include ../partials/footer %>
