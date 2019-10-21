@@ -3,6 +3,7 @@ const cloudinary = require('cloudinary');
 const geocoder = require('../helpers/geocoder');
 const upload = require('../middlewares/multer');
 const isLoggedIn = require('../middlewares/isLoggedIn');
+const isStoreAuthor = require('../middlewares/isStoreAuthor');
 
 const Store = require('../models/store');
 
@@ -61,7 +62,6 @@ router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
     res.redirect(`/stores/${store._id}`);
     res.redirect(`/stores/`);
   } catch(error) {
-    // req.flash('error', error.message);
     console.log(error)
     res.redirect('back');
   }
@@ -83,10 +83,11 @@ router.get('/:id', async (req, res) => {
 // edit route
 // update route
 
-router.delete('/:id', isLoggedIn, async (req, res) => {
+router.delete('/:id', isLoggedIn, isStoreAuthor, async (req, res) => {
   try {
     const store = await Store.findById(req.params.id);
     // await cloudinary.v2.uploader.destroy(store.imageId);
+    // usuwanie powiazanych ocen
     await store.remove();
     res.redirect('/stores');
   } catch(error) {

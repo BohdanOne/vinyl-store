@@ -21,7 +21,7 @@
         <% if(currentUser && store.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
           <div class="float-right">
             <a class="btn btn-sm btn-warning" href="/stores/<%= store._id %>/edit">Edit</a>
-            <form class="delete-form" action="/stores/<%= store._id %>?_method=DELETE" method="POST">
+            <form class="" action="/stores/<%= store._id %>?_method=DELETE" method="POST">
               <button class="btn btn-sm btn-danger">Delete</button>
             </form>
           </div>

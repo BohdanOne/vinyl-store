@@ -7,6 +7,7 @@ const isLoggedIn = require('../middlewares/isLoggedIn');
 const upload = require('../middlewares/multer');
 
 const User = require('../models/user');
+const Store = require('../models/store');
 
 const router = express.Router();
 
@@ -47,7 +48,8 @@ router.get('/logout', (req, res) => {
 router.get('/:id', isLoggedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    res.render('users/show', { user });
+    const stores = await Store.find().where('author.id').equals(user._id).exec();
+    res.render('users/show', { user, stores });
   } catch (error) {
     console.log(error);
     res.redirect('/');
