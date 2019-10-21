@@ -4,20 +4,26 @@
 
   <main class="col-sm-8 col-md-9 mt-4">
     <div class="card">
-      <!-- <img class="card-img" src="<%= user.image %>" alt="<%= user.name %>"> -->
-      <div class="card-body">
+      <img class="card-img" src="<%= user.image %>" alt="<%= user.username %>">
+      <div class="card-header">
         <h3 class="card-title"><%= user.username %></h3>
+        <h5 class="card-subtitle text-muted"><%= user.firstName %> <%= user.lastName %></h2>
+        <p class="small text-muted">Joined: <%= moment(user.joined).fromNow() %></p>
+      </div>
+      <div class="card-body">
         <p><%= user.info %></p>
-        <% if(currentUser && user._id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
-          <div class="float-right">
-            <a class="btn btn-sm btn-warning" href="/users/<%= user._id %>/edit">Edit Profile</a>
-            <form class="" action="/users/<%= user._id %>?_method=DELETE" method="POST">
+      </div>
+      <% if(currentUser && user._id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+        <div class="card-footer">
+          <div class="row">
+            <a class="btn btn-sm btn-warning mr-2" href="/users/<%= user._id %>/edit">Edit Profile</a>
+            <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
               <button class="btn btn-sm btn-danger">Delete Profile</button>
             </form>
           </div>
-        <% } %>
+        </div>
+      <% } %>
 
-      </div>
     </div>
   </main>
 

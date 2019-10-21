@@ -16,11 +16,15 @@ const userSchema = new mongoose.Schema({
   },
   password: String,
   info: String,
-  image: {
-    type: String
-    // required: true
+  joined: {
+    type: Date,
+    default: Date.now
   },
-  // imageId: String,
+  image: {
+    type: String,
+    required: true
+  },
+  imageId: String,
   isAdmin: {
     type: Boolean,
     default: false

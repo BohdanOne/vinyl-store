@@ -1,36 +1,47 @@
 <% include ../partials/header %>
 
 <div class="row">
-  <div class="col-sm-4 col-md-3 mt-4">
-    <div class="mb-3 list-group">
-      <li class="list-group-item active">Adress</li>
-      <li class="list-group-item">Opening hours</li>
+  <div class="col-3 mt-4">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-pills-general-tab" data-toggle="pill" href="#v-pills-general" role="tab" aria-controls="v-pills-home" aria-selected="true">General Info</a>
+      <a class="nav-link" id="v-pills-location-tab" data-toggle="pill" href="#v-pills-location" role="tab" aria-controls="v-pills-location" aria-selected="false">Location</a>
+      <a class="nav-link" id="v-pills-hours-tab" data-toggle="pill" href="#v-pills-hours" role="tab" aria-controls="v-pills-hours" aria-selected="false">Opening Hours</a>
+      <a class="nav-link" id="v-pills-reviews-tab" data-toggle="pill" href="#v-pills-reviews" role="tab" aria-controls="v-pills-reviews" aria-selected="false">Reviews</a>
     </div>
-    <div id="map"></div>
   </div>
-
-  <main class="col-sm-8 col-md-9 mt-4">
-    <div class="card">
-      <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
-      <div class="card-body">
-        <h3 class="card-title"><%= store.name %></h3>
-        <p><%= store.description %></p>
-        <div class="small">
-          <em> Submited by <a href="/users/<%= store.author.id %>"><%= store.author.username %></a></em>
-        </div>
-        <% if(currentUser && store.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
-          <div class="float-right">
-            <a class="btn btn-sm btn-warning" href="/stores/<%= store._id %>/edit">Edit</a>
-            <form class="" action="/stores/<%= store._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-sm btn-danger">Delete</button>
-            </form>
+  <div class="col-9 mt-4">
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-general" role="tabpanel" aria-labelledby="v-pills-general-tab">
+        <div class="card">
+          <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
+          <div class="card-header">
+            <h3 class="card-title"><%= store.name %></h3>
+            <div class="small">
+              <em> Submited by <a href="/users/<%= store.author.id %>"><%= store.author.username %></a>, <%= moment(store.createdAt).fromNow() %>.</em>
+            </div>
           </div>
-        <% } %>
-
+          <div class="card-body">
+            <p><%= store.description %></p>
+            <% if(currentUser && store.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+              <div class="card-footer">
+                <div class="row">
+                  <a class="btn btn-sm btn-warning mr-2" href="/stores/<%= store._id %>/edit">Edit Store</a>
+                  <form action="/stores/<%= store._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-danger">Delete Store</button>
+                  </form>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
       </div>
+      <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
+        <div id="map"></div>
+      </div>
+      <div class="tab-pane fade" id="v-pills-hours" role="tabpanel" aria-labelledby="v-pills-hours-tab">...</div>
+      <div class="tab-pane fade" id="v-pills-reviews" role="tabpanel" aria-labelledby="v-pills-reviews-tab">...</div>
     </div>
-  </main>
-
+  </div>
 </div>
 
 <script>

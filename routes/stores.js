@@ -60,7 +60,6 @@ router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
 
     const store = await Store.create({ name, image, imageId, description, location, lat, lng, author });
     res.redirect(`/stores/${store._id}`);
-    res.redirect(`/stores/`);
   } catch(error) {
     console.log(error)
     res.redirect('back');
