@@ -2,6 +2,7 @@ const express = require('express');
 const cloudinary = require('cloudinary');
 const geocoder = require('../helpers/geocoder');
 const upload = require('../middlewares/multer');
+const isLoggedIn = require('../middlewares/isLoggedIn');
 
 const Store = require('../models/store');
 
@@ -15,7 +16,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-router.get('/', upload.single('image'), async (req, res) => {
+router.get('/', async (req, res) => {
   if(req.query.search) {
     try {
       const regex = new RegExp(escapeRegex(req.query.search), 'gi');
@@ -39,15 +40,15 @@ router.get('/', upload.single('image'), async (req, res) => {
   }
 });
 
-router.get('/new', (req, res) => res.render('stores/new'));
+router.get('/new', isLoggedIn, (req, res) => res.render('stores/new'));
 
-router.post('/', upload.single('image'), async (req, res) => {
+router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
     const {name, description } = req.body;
-    // const author = {
-    //   id: req.user._id,
-    //   username: req.user.username
-    // };
+    const author = {
+      id: req.user._id,
+      username: req.user.username
+    };
     const imgPath = await cloudinary.uploader.upload(req.file.path);
     const image = imgPath.secure_url;
     const imageId = imgPath.public_id;
@@ -56,7 +57,7 @@ router.post('/', upload.single('image'), async (req, res) => {
     const lng = data[0].longitude;
     const location = data[0].formattedAddress;
 
-    const store = await Store.create({ name, image, imageId, description, location, lat, lng });
+    const store = await Store.create({ name, image, imageId, description, location, lat, lng, author });
     res.redirect(`/stores/${store._id}`);
     res.redirect(`/stores/`);
   } catch(error) {
@@ -76,5 +77,25 @@ router.get('/:id', async (req, res) => {
     res.redirect('back');
   }
 });
+
+
+// TODO
+// edit route
+// update route
+
+router.delete('/:id', isLoggedIn, async (req, res) => {
+  try {
+    const store = await Store.findById(req.params.id);
+    // await cloudinary.v2.uploader.destroy(store.imageId);
+    await store.remove();
+    res.redirect('/stores');
+  } catch(error) {
+    console.log(error);
+    res.redirect('back');
+  }
+});
+
+
+
 
 module.exports = router;

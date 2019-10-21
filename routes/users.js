@@ -3,7 +3,7 @@ const passport = require('passport');
 // const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary');
-// const isLoggedIn = require('../middlewares/isLoggedIn');
+const isLoggedIn = require('../middlewares/isLoggedIn');
 const upload = require('../middlewares/multer');
 
 const User = require('../models/user');
@@ -44,11 +44,10 @@ router.get('/logout', (req, res) => {
   res.redirect('/stores');
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', isLoggedIn, async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.render('users/show', { user });
-    res.send('user profile');
   } catch (error) {
     console.log(error);
     res.redirect('/');

@@ -14,13 +14,23 @@
       <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
       <div class="card-body">
         <h3 class="card-title"><%= store.name %></h3>
-
         <p><%= store.description %></p>
+        <div class="small">
+          <em> Submited by <a href="/users/<%= store.author.id %>"><%= store.author.username %></a></em>
+        </div>
+        <% if(currentUser && store.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+          <div class="float-right">
+            <a class="btn btn-sm btn-warning" href="/stores/<%= store._id %>/edit">Edit</a>
+            <form class="delete-form" action="/stores/<%= store._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </div>
+        <% } %>
 
       </div>
     </div>
   </main>
-  
+
 </div>
 
 <script>
