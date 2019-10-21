@@ -18,19 +18,8 @@ const storeSchema = new mongoose.Schema({
       ref: 'User'
     },
     username: String
-  }
-  // comments: [
-  //   {
-  //    type: mongoose.Schema.Types.ObjectId,
-  //    ref: 'Comment'
-  //   }
-  // ],
-  // likes: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'User'
-  //   }
-  // ]
+  },
+  hours: {}
 });
 
 module.exports = mongoose.model('Store', storeSchema);
