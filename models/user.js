@@ -14,13 +14,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true
   },
-  info: String,
   password: String,
+  info: String,
   image: {
-    type: String,
-    default: 'https://res.cloudinary.com/bohdan/image/upload/v1571399330/default-avatar_xxgpvl.png'
+    type: String
+    // required: true
   },
-  imageId: String,
+  // imageId: String,
   isAdmin: {
     type: Boolean,
     default: false
