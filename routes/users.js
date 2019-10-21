@@ -31,6 +31,19 @@ router.post('/register', /*upload.single('image'),*/ async (req, res) => {
   }
 });
 
+router.get('/login', (req, res) => res.render('users/login'));
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/stores',
+  failureRedirect: '/users/login'
+}));
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  // req.flash('success', 'Logged out');
+  res.redirect('/stores');
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
