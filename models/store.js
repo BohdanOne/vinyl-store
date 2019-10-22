@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const storeSchema = new mongoose.Schema({
   name: String,
-  image: String, //default image
+  image: String,
   imageId: String,
   description: String,
   location: String,

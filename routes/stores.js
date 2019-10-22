@@ -46,6 +46,15 @@ router.get('/new', isLoggedIn, (req, res) => res.render('stores/new'));
 router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
   try {
     const {name, description } = req.body;
+    const hours = {
+      'monday': `${req.body.mondayOp} - ${req.body.mondayCl}`,
+      'tuesday': `${req.body.tuesdayOp} - ${req.body.tuesdayCl}`,
+      'wednesday': `${req.body.wednesdayOp} - ${req.body.wednesdayCl}`,
+      'thursday': `${req.body.thursdayOp} - ${req.body.thursdayCl}`,
+      'friday': `${req.bodyfridayOp} - ${req.bodyfridayCl}`,
+      'saturday': `${req.body.saturdayOp} - ${req.body.saturdayCl}`,
+      'sunday': `${req.body.sundayOp} - ${req.body.sundayCl}`
+    };
     const author = {
       id: req.user._id,
       username: req.user.username
@@ -58,7 +67,7 @@ router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
     const lng = data[0].longitude;
     const location = data[0].formattedAddress;
 
-    const store = await Store.create({ name, image, imageId, description, location, lat, lng, author });
+    const store = await Store.create({ name, image, imageId, description, location, lat, lng, author, hours });
     res.redirect(`/stores/${store._id}`);
   } catch(error) {
     console.log(error)

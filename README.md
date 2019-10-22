@@ -17,7 +17,7 @@ Browse and add your favorite record stores.
 ## Learning goals
 
 Build simple full stack app.
-Stack: MongoDB, Express, Node.js.
+Stack: MongoDB, Express, Node.js, Bootstrap.
 
 ## Credits
 
