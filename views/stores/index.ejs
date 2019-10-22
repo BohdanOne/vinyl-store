@@ -19,6 +19,18 @@
           <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
           <div class="card-body">
             <h4 class="card-title"><%= store.name %></h4>
+            <div>
+              <% if (store.rating === 0) { %>
+                <em>No reviews yet.</em>
+              <% } else { %>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star <% if (store.rating > 1.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (store.rating > 2.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (store.rating > 3.5) { %> checked <% } %>"></span>
+                <span class="fa fa-star <% if (store.rating > 4.5) { %> checked <% } %>"></span>
+              <% } %>
+
+            </div>
             <a href="/stores/<%= store._id %>" class="btn btn-primary">Visit</a>
           </div>
         </div>

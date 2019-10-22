@@ -19,6 +19,16 @@ const storeSchema = new mongoose.Schema({
     },
     username: String
   },
+  reviews: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Review'
+    }
+  ],
+  rating: {
+    type: Number,
+    default: 0
+  },
   hours: {}
 });
 
