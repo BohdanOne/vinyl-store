@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+
+<header class="text-center mb-4">
+  <h1>Reset your password</h1>
+  <a href="/">Go Back</a>
+</header>
+
+<form class="container col-md-8" action="/users/forgot" method="POST">
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email" name="email" autofocus required>
+  </div>
+  <button type="submit" class="btn btn-block btn-outline-danger mt-4 mb-4">Reset password</button>
+</form>
+
+<% include ../partials/footer %>

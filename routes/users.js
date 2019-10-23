@@ -1,12 +1,11 @@
 const express = require('express');
 const passport = require('passport');
-// const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary');
 const isLoggedIn = require('../middlewares/isLoggedIn');
 const isUserAuthor = require('../middlewares/isUserAuthor');
 const upload = require('../middlewares/multer');
-
 const User = require('../models/user');
 const Store = require('../models/store');
 
@@ -43,6 +42,93 @@ router.get('/logout', (req, res) => {
   req.logout();
   // req.flash('success', 'Logged out');
   res.redirect('/stores');
+});
+
+router.get('/forgot', (req, res) => res.render('users/forgot'));
+
+router.post('/forgot', async (req, res, next) => {
+  try {
+    const token = crypto.randomBytes(20).toString('hex');
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      console.log('We do not have account with that email address');
+      res.redirect('/users/forgot');
+    }
+    user.resetPasswordToken = token;
+    user.resetPasswordExpires = Date.now() + 3600000;
+    await user.save();
+    const smtpTransport = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'vinyl.store.app@gmail.com',
+        pass: process.env.GMAIL_PW
+      }
+    });
+    const mailOptions = {
+      to: user.email,
+      from: 'vinyl.store.app@gmail.com',
+      subject: 'Vinyl Store Password Reset',
+      text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+      'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+      'http://' + req.headers.host + '/users/reset/' + token + '\n\n' +
+      'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+    };
+    await smtpTransport.sendMail(mailOptions);
+    console.log(`An e-mail has been sent to ${user.email} with further instructions.`);
+    res.redirect('/');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/users/forgot');
+  }
+});
+
+router.get('/reset/:token', async (req, res) => {
+  try {
+    await User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } });
+    res.render('users/reset', { token: req.params.token});
+  } catch (error) {
+    console.log('Password reset token is invalid or has expired.');
+    res.redirect('/users/forgot');
+  }
+});
+
+router.post('/reset/:token', async (req, res) => {
+  try {
+    const user = await User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } });
+    if (!user) {
+      console.log('Password reset token is invalid or has expired.');
+      res.redirect('back');
+    }
+    if (req.body.password !== req.body.confirm) {
+      console.log('Passwords do not match');
+      res.redirect('back');
+    }
+    await user.setPassword(req.body.password);
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+    await req.logIn(user);
+    const smtpTransport = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: 'vinyl.store.app@gmail.com',
+        pass: process.env.GMAIL_PW
+      }
+    });
+    const mailOptions = {
+      to: user.email,
+      from: 'vinyl.store.app@gmail.com',
+      subject: 'Vinyl Store - Your Password Has Been Changed',
+      text: 'Hello,\n\n' +
+      'This is a confirmation that the password for your account ' + user.email + ' at Vinyl Store has just been changed.\n'
+    };
+    await smtpTransport.sendMail(mailOptions);
+    console.log('Success! Your password has been changed.');
+    return res.redirect('/stores');
+  } catch (error) {
+    console.log(error);
+    res.redirect('/');
+  }
 });
 
 router.get('/:id', isLoggedIn, async (req, res) => {

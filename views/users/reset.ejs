@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+
+<header class="text-center mb-4">
+  <h1>Reset your password</h1>
+  <a href="/">Go Back</a>
+</header>
+
+<form class="container col-md-8" action="/users/reset/<%= token %>" method="POST">
+  <div class="form-group">
+    <label for="password">New Password</label>
+    <input type="password" class="form-control" id="password" name="password" value="" placeholder="New Password" autofocus required>
+  </div>
+  <div class="form-group">
+    <label for="cofirm">New Password</label>
+    <input type="password" class="form-control" id="confirm" name="confirm" value="" placeholder="Confirm Password" required>
+  </div>
+  <button type="submit" class="btn btn-block btn-outline-danger mt-4 mb-4">Reset password</button>
+</form>
+
+<% include ../partials/footer %>
