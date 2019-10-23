@@ -4,6 +4,7 @@ const passport = require('passport');
 const crypto = require('crypto');
 const cloudinary = require('cloudinary');
 const isLoggedIn = require('../middlewares/isLoggedIn');
+const isUserAuthor = require('../middlewares/isUserAuthor');
 const upload = require('../middlewares/multer');
 
 const User = require('../models/user');
@@ -59,6 +60,54 @@ router.get('/:id', isLoggedIn, async (req, res) => {
   }
 });
 
+router.get('/:id/edit', isLoggedIn, isUserAuthor, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.render('users/edit', { user });
+  } catch (error) {
+    console.log(error);
+    res.redirect('back');
+  }
+});
 
+router.put('/:id', isLoggedIn, isUserAuthor, upload.single('image'), async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const { username, firstName, lastName, email, info } = req.body;
+    user.username = username;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.email = email;
+    user.info = info;
+    if(req.file) {
+      try {
+        await cloudinary.v2.uploader.destroy(user.imageId);
+        const imagePath = await cloudinary.v2.uploader.upload(req.file.path);
+        user.imageId = imagePath.public_id;
+        user.image = imagePath.secure_url;
+      } catch(err) {
+        console.log(error);
+        res.redirect('back');
+      }
+    }
+    await user.save();
+    res.redirect(`/users/${req.params.id}`);
+  } catch (error) {
+    console.log(error);
+    res.redirect('back');
+  }
+});
+
+router.delete('/:id', isLoggedIn, isUserAuthor, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    await cloudinary.v2.uploader.destroy(user.imageId);
+    await user.remove();
+    res.redirect('/');
+  } catch (error) {
+    console.log(error);
+    res.redirect('back');
+  }
+});
 
 module.exports = router;

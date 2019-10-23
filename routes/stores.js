@@ -52,7 +52,7 @@ router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
       'tuesday': `${req.body.tuesdayOp} - ${req.body.tuesdayCl}`,
       'wednesday': `${req.body.wednesdayOp} - ${req.body.wednesdayCl}`,
       'thursday': `${req.body.thursdayOp} - ${req.body.thursdayCl}`,
-      'friday': `${req.bodyfridayOp} - ${req.bodyfridayCl}`,
+      'friday': `${req.body.fridayOp} - ${req.body.fridayCl}`,
       'saturday': `${req.body.saturdayOp} - ${req.body.saturdayCl}`,
       'sunday': `${req.body.sundayOp} - ${req.body.sundayCl}`
     };
@@ -90,31 +90,61 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.get('/:id/edit', isLoggedIn, isStoreAuthor, async (req, res) => {
+  try {
+    const store = await Store.findById(req.params.id);
+    res.render('stores/edit', { store });
 
-// TODO
-// edit route
-// update route
+  } catch(error) {
+    console.log(error);
+    res.redirect('back');
+  }
+});
 
-// UPDATE CAMPGROUND ROUTE
-// router.put("/:id", middleware.checkCampgroundOwnership, function (req, res) {
-//   delete req.body.campground.rating;         <====== wazne!
-//   // find and update the correct campground
-//   Campground.findByIdAndUpdate(req.params.id, req.body.campground, function (err, updatedCampground) {
-//       if (err) {
-//           res.redirect("/campgrounds");
-//       } else {
-//           //redirect somewhere(show page)
-//           res.redirect("/campgrounds/" + req.params.id);
-//       }
-//   });
-// });
+router.put('/:id', isLoggedIn, isStoreAuthor, upload.single('image'), async (req, res) => {
+  try {
+    const store = await Store.findById(req.params.id);
+    const data = await geocoder.geocode(req.body.location);
+    delete req.body.rating;
+    store.name = req.body.name;
+    store.description = req.body.description;
+    store.lat = data[0].latitude;
+    store.lng = data[0].longitude;
+    store.location = data[0].formattedAddress;
+    store.hours = {
+      'monday': `${req.body.mondayOp} - ${req.body.mondayCl}`,
+      'tuesday': `${req.body.tuesdayOp} - ${req.body.tuesdayCl}`,
+      'wednesday': `${req.body.wednesdayOp} - ${req.body.wednesdayCl}`,
+      'thursday': `${req.body.thursdayOp} - ${req.body.thursdayCl}`,
+      'friday': `${req.body.fridayOp} - ${req.body.fridayCl}`,
+      'saturday': `${req.body.saturdayOp} - ${req.body.saturdayCl}`,
+      'sunday': `${req.body.sundayOp} - ${req.body.sundayCl}`
+    };
+    if(req.file) {
+      try {
+        await cloudinary.v2.uploader.destroy(store.imageId);
+        const imgPath = await cloudinary.uploader.upload(req.file.path);
+        store.image = imgPath.secure_url;
+        store.imageId = imgPath.public_id;
+      } catch(error) {
+        console.log(error);
+        res.redirect('back');
+      }
+    }
+    await store.save();
+    res.redirect(`/stores/${req.params.id}`);
+
+  } catch(error) {
+    console.log(error);
+    res.redirect('back');
+  }
+});
 
 router.delete('/:id', isLoggedIn, isStoreAuthor, async (req, res) => {
   try {
     const store = await Store.findById(req.params.id);
     await cloudinary.v2.uploader.destroy(store.imageId);
     await Review.deleteMany({ _id: {$in: store.reviews}});
-    // usuwanie powiazanych ocen
     await store.remove();
     res.redirect('/stores');
   } catch(error) {

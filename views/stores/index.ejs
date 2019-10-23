@@ -19,7 +19,7 @@
           <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
           <div class="card-body">
             <h4 class="card-title"><%= store.name %></h4>
-            <div class="card-text mb-3">
+            <div class="card-text mb-3 small">
               <% if (store.rating > 0) { %>
                 <span class="fa fa-star checked"></span>
                 <span class="fa fa-star <% if (store.rating > 1.5) { %> checked <% } %>"></span>
