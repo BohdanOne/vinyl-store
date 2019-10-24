@@ -13,7 +13,7 @@ const router = express.Router();
 const escapeRegex = text => text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 
 cloudinary.config({
-  cloud_name: 'bohdan',
+  cloud_name: 'bohdanonedev',
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
