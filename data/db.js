@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const db_URI = process.env.DB_URI;
 
 mongoose.connect(db_URI, {
+  dbName: 'VinylStore',
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
