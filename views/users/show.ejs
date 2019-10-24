@@ -16,10 +16,11 @@
       <% if(currentUser && user._id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
         <div class="card-footer">
           <div class="row">
-            <a class="btn btn-sm btn-warning mr-2" href="/users/<%= user._id %>/edit">Edit Profile</a>
-            <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
+            <a class="btn btn-sm btn-warning mr-2 mb-2" href="/users/<%= user._id %>/edit">Edit Profile</a>
+            <form class="mr-2 mb-2" action="/users/<%= user._id %>?_method=DELETE" method="POST">
               <button class="btn btn-sm btn-danger">Delete Profile</button>
             </form>
+            <a class="btn btn-sm btn-info mb-2" href="/users/forgot">Reset Password</a>
           </div>
         </div>
       <% } %>
