@@ -17,4 +17,15 @@ Browse and add your favorite record stores.
 ## Learning goals
 
 Build simple full stack app.
-Stack: MongoDB, Express, Node.js.
+Stack: MongoDB, Express, Node.js, Bootstrap.
+
+## Credits
+
+### Landing Page photos:
+- Photo by Juliane Mergener on Unsplash
+- Photo by Mick Haupt on Unsplash
+- Photo by Jamakassi on Unsplash
+- Photo by Clem Onojeghuo on Unsplash
+- Photo by Luana De Marco on Unsplash
+
+### App inspired by yelp-camp app from Colt Steeles The Web Developer Bootcamp at Udemy

@@ -1,0 +1,42 @@
+<% include ../partials/header %>
+
+<div class="row">
+
+  <main class="col-sm-8 col-md-9 mt-4">
+    <div class="card">
+      <img class="card-img" src="<%= user.image %>" alt="<%= user.username %>">
+      <div class="card-header">
+        <h3 class="card-title"><%= user.username %></h3>
+        <h5 class="card-subtitle text-muted"><%= user.firstName %> <%= user.lastName %></h2>
+        <p class="small text-muted">Joined: <%= moment(user.joined).fromNow() %></p>
+      </div>
+      <div class="card-body">
+        <p><%= user.info %></p>
+      </div>
+      <% if(currentUser && user._id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+        <div class="card-footer">
+          <div class="row">
+            <a class="btn btn-sm btn-warning mr-2 mb-2" href="/users/<%= user._id %>/edit">Edit Profile</a>
+            <form class="mr-2 mb-2" action="/users/<%= user._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-danger">Delete Profile</button>
+            </form>
+            <a class="btn btn-sm btn-info mb-2" href="/users/forgot">Reset Password</a>
+          </div>
+        </div>
+      <% } %>
+
+    </div>
+  </main>
+
+  <aside class="col-sm-4 col-md-3 mt-4">
+    <div class="mb-3 list-group">
+      <li class="list-group-item active">User Stores</li>
+      <% stores.forEach(store => { %>
+        <li class="list-group-item"><a href="/stores/<%= store._id %>"><%= store.name %></a></li>
+      <% }) %>
+    </div>
+  </aside>
+
+</div>
+
+<% include ../partials/footer %>

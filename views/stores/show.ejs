@@ -1,0 +1,133 @@
+<% include ../partials/header %>
+<div class="container">
+  <h1 class="card-title"><%= store.name %></h1>
+</div>
+<div class="row">
+  <div class="col-sm-3 mt-4">
+    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+      <a class="nav-link active" id="v-pills-general-tab" data-toggle="pill" href="#v-pills-general" role="tab" aria-controls="v-pills-home" aria-selected="true">General Info</a>
+      <a class="nav-link" id="v-pills-location-tab" data-toggle="pill" href="#v-pills-location" role="tab" aria-controls="v-pills-location" aria-selected="false">Location</a>
+      <a class="nav-link" id="v-pills-hours-tab" data-toggle="pill" href="#v-pills-hours" role="tab" aria-controls="v-pills-hours" aria-selected="false">Opening Hours</a>
+      <a class="nav-link" id="v-pills-reviews-tab" data-toggle="pill" href="#v-pills-reviews" role="tab" aria-controls="v-pills-reviews" aria-selected="false">Reviews</a>
+    </div>
+  </div>
+  <div class="col-sm-9 mt-4">
+
+    <div class="tab-content" id="v-pills-tabContent">
+      <div class="tab-pane fade show active" id="v-pills-general" role="tabpanel" aria-labelledby="v-pills-general-tab">
+        <div class="card">
+          <img class="card-img" src="<%= store.image %>" alt="<%= store.name %>">
+          <div class="card-header">
+            <div class="small">
+              <p>Submited by <a href="/users/<%= store.author.id %>"><%= store.author.username %></a>, <%= moment(store.createdAt).fromNow() %>.</p>
+            </div>
+          </div>
+          <div class="card-body">
+            <p><%= store.description %></p>
+            <% if(currentUser && store.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+              <div class="card-footer">
+                <div class="row">
+                  <a class="btn btn-sm btn-warning mr-2" href="/stores/<%= store._id %>/edit">Edit Store</a>
+                  <form action="/stores/<%= store._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-sm btn-danger">Delete Store</button>
+                  </form>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="v-pills-location" role="tabpanel" aria-labelledby="v-pills-location-tab">
+        <div id="map"></div>
+        <p class="mt-4"><%= store.location %></p>
+      </div>
+
+      <div class="tab-pane fade" id="v-pills-hours" role="tabpanel" aria-labelledby="v-pills-hours-tab">
+        <ul class="list-group">
+          <h5 class="list-group-item list-group-item-primary text-center">Opening Hours:</h5>
+          <li class="list-group-item"><span class="font-weight-bold">Monday:</span> <%= store.hours.monday %></li>
+          <li class="list-group-item"><span class="font-weight-bold">Tuesday:</span> <%= store.hours.tuesday %></li>
+          <li class="list-group-item"><span class="font-weight-bold">Wednesday:</span> <%= store.hours.wednesday %></li>
+          <li class="list-group-item"><span class="font-weight-bold">Thursday:</span> <%= store.hours.thursday %></li>
+          <li class="list-group-item"><span class="font-weight-bold">Friday:</span> <%= store.hours.friday %></li>
+          <li class="list-group-item"><span class="font-weight-bold">Saturday:</span> <%= store.hours.saturday %></li>
+          <li class="list-group-item"><span class="font-weight-bold">Sunday:</span> <%= store.hours.sunday %></li>
+          <li class="list-group-item list-group-item-primary"></li>
+        </ul>
+
+      </div>
+      <div class="tab-pane fade" id="v-pills-reviews" role="tabpanel" aria-labelledby="v-pills-reviews-tab">
+        <% if (store.rating === 0) { %>
+          <p>No reviews yet...</p>
+        <% } else { %>
+          <p>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star <% if (store.rating > 1.5) { %> checked <% } %>"></span>
+            <span class="fa fa-star <% if (store.rating > 2.5) { %> checked <% } %>"></span>
+            <span class="fa fa-star <% if (store.rating > 3.5) { %> checked <% } %>"></span>
+            <span class="fa fa-star <% if (store.rating > 4.5) { %> checked <% } %>"></span>
+          </p>
+          <p>Average rating: <strong><%= store.rating.toFixed(2) %></strong> / <%= store.reviews.length %></p>
+          <h4>Latest reviews:</h4>
+          <hr>
+          <% store.reviews.slice(0, 5).forEach(review => { %>
+            <div class="row">
+              <div class="col-md-3">
+                <%- '<span class="fa fa-star checked"></span>'.repeat(review.rating) %><%- '<span class="fa fa-star"></span>'.repeat(5 - review.rating) %>
+                <div class="small">
+                  <p>Review by: <strong><%= review.author.username %></strong></p>
+                  <p><%= review.updatedAt.toDateString() %></p>
+                </div>
+              </div>
+              <div class="col-md-9">
+                <p><%= review.text %></p>
+                <% if(currentUser && review.author.id.equals(currentUser._id)){ %>
+                  <div class="btn-group">
+                    <a class="btn btn-sm btn-warning mr-2" href="/stores/<%=store._id %>/reviews/<%=review._id %>/edit">Edit</a>
+                    <form class="inline-form" action="/stores/<%=store._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
+                      <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                  </div>
+                <% } %>
+              </div>
+            </div>
+            <hr>
+            <% }); %>
+
+            <div class="btn-group">
+              <a class="btn btn-sm btn-info mr-2" href="/stores/<%= store._id %>/reviews">See all reviews</a>
+            <% } %>
+              <a class="btn btn-primary btn-sm <% if (currentUser && store.reviews.some(function (review) {return review.author.id.equals(currentUser._id)})) { %> disabled <% } %>" href="/stores/<%= store._id %>/reviews/new">
+                Write a New Review</a>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initMap() {
+    const lat = <%= store.lat %>;
+    const lng = <%= store.lng %>;
+    const center = {lat: lat, lng: lng };
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 13,
+        center: center,
+        scrollwheel: false
+    });
+    const contentString = `
+      <h6><%= store.name %></h6>
+    `
+    const infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    const marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', () => infowindow.open(map, marker));
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= apiKey %>&callback=initMap"></script>
+<% include ../partials/footer %>

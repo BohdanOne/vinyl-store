@@ -1,0 +1,69 @@
+<% include ../partials/header %>
+
+<header class="text-center mb-4">
+  <h1>Add a New Store</h1>
+  <a href="/stores">Go Back</a>
+</header>
+
+<form class="container col-md-8" action="/stores" method="POST" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="name">Store Name</label>
+    <input type="text" class="form-control" id="name" name="name" required>
+  </div>
+  <div class="form-group">
+    <label for="location">Store Adress</label>
+    <input type="text" class="form-control" id="location" name="location" required>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+  </div>
+  <div class="input-group flex-column">
+    <span class="input-group-text">Opening Hours</span>
+    <label>
+      Monday
+      <input type="time" aria-label="opening" name="mondayOp" class="form-control">
+      <input type="time" aria-label="closing" name="mondayCl" class="form-control">
+    </label>
+    <label>
+      Tuesday
+      <input type="time" aria-label="opening" name="tuesdayOp" class="form-control">
+      <input type="time" aria-label="closing" name="tuesdayCl" class="form-control">
+    </label>
+    <label>
+      Wednesday
+      <input type="time" aria-label="opening" name="wednesdayOp" class="form-control">
+      <input type="time" aria-label="closing" name="wednesdayCl" class="form-control">
+    </label>
+    <label>
+      Thursday
+      <input type="time" aria-label="opening" name="thursdayOp" class="form-control">
+      <input type="time" aria-label="closing" name="thursdayCl" class="form-control">
+    </label>
+    <label>
+      Friday
+      <input type="time" aria-label="opening" name="fridayOp" class="form-control">
+      <input type="time" aria-label="closing" name="fridayCl" class="form-control">
+    </label>
+    <label>
+      Saturday
+      <input type="time" aria-label="opening" name="saturdayOp" class="form-control">
+      <input type="time" aria-label="closing" name="saturdayCl" class="form-control">
+    </label>
+    <label>
+      Sunday
+      <input type="time" aria-label="opening" name="sundayOp" class="form-control">
+      <input type="time" aria-label="closing" name="sundayCl" class="form-control">
+    </label>
+  </div>
+  <div class="custom-file">
+    <label class="custom-file-label">Upload Store Image</label>
+    <input class="custom-file-input" id="image" type="file" name="image" accept="image/*" required aria-describedby="imageHelpBlock">
+    <small id="imageHelpBlock" class="form-text text-muted">
+      File cannot exceed 10 MB size!
+    </small>
+  </div>
+  <button type="submit" class="btn btn-block btn-outline-primary mt-4 mb-4">Submit</button>
+</form>
+
+<% include ../partials/footer %>
