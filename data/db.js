@@ -7,6 +7,6 @@ mongoose.connect(db_URI, {
   useUnifiedTopology: true,
   useCreateIndex: true
 });
-mongoose.connection.on('connected', () => console.log(`Mongoose connected to ${db_URI}`));
+mongoose.connection.on('connected', () => console.log(`Mongoose connected`));
 mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
 mongoose.connection.on('error', error => console.error(`Mongoose connection error: ${error}`));
