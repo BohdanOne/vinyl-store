@@ -18,17 +18,17 @@ router.get('/', async (req, res) => {
     }).exec();
     res.render('reviews/index', { store });
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back')
   }
 });
 
 router.get('/new', isLoggedIn, checkReviewExistence, async (req, res) => {
   try {
-  const store = await Store.findById(req.params.id);
-  res.render('reviews/new', { store });
+    const store = await Store.findById(req.params.id);
+    res.render('reviews/new', { store });
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);;
     res.redirect('back');
   }
 });
@@ -46,9 +46,10 @@ router.post('/', isLoggedIn, checkReviewExistence, async (req, res) => {
     store.reviews.push(review);
     store.rating = calculateAverage(store.reviews);
     await store.save();
+    req.flash('success', 'Review saved!')
     res.redirect(`/stores/${store._id}`);
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -58,7 +59,7 @@ router.get('/:review_id/edit', isLoggedIn, isReviewAuthor, async (req, res) => {
     const review = await Review.findById(req.params.review_id);
     res.render('reviews/edit', { store_id: req.params.id, review });
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -72,9 +73,10 @@ router.put('/:review_id', isLoggedIn, isReviewAuthor, async (req, res) => {
     const store = await Store.findById(req.params.id).populate('reviews').exec();
     store.rating = calculateAverage(store.reviews);
     await store.save();
+    req.flash('success', 'Review updated!');
     res.redirect(`/stores/${store._id}`);
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -85,10 +87,10 @@ router.delete('/:review_id', isLoggedIn, isReviewAuthor, async (req, res) => {
     const store = await Store.findByIdAndUpdate(req.params.id, {$pull: { review: req.params.review_id }}).populate('reviews').exec();
     store.rating = calculateAverage(store.reviews);
     await store.save();
+    req.flash('success', 'Review removed!');
     res.redirect(`/stores/${store._id}`);
-
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });

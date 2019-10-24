@@ -27,3 +27,5 @@ Stack: MongoDB, Express, Node.js, Bootstrap.
 - Photo by Jamakassi on Unsplash
 - Photo by Clem Onojeghuo on Unsplash
 - Photo by Luana De Marco on Unsplash
+
+### App inspired by yelp-camp app from Colt Steeles The Web Developer Bootcamp at Udemy

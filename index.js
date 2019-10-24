@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const methodOverride = require('method-override');
+const flash = require('connect-flash');
 
 const User = require('./models/user');
 
@@ -21,6 +22,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 app.locals.moment = require('moment');
+app.use(flash());
 
 app.use(require('express-session')({
   secret: process.env.PASSPORT,
@@ -34,6 +36,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
   next();
 })
 

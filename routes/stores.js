@@ -19,14 +19,16 @@ cloudinary.config({
 });
 
 router.get('/', async (req, res) => {
+
   if(req.query.search) {
     try {
       const regex = new RegExp(escapeRegex(req.query.search), 'gi');
       const stores = await Store.find({ name: regex });
       if(stores.length > 0) {
+        req.flash('success', `We have found ${stores.length} ${stores.length === 1 ? 'store' : 'stores'} matching your search..`);
         res.render('stores/index', { stores });
       } else {
-        console.log('No match'); // TODO: flash message
+        req.flash('error', 'We cannot find store matching your search..')
         res.redirect('/stores');
       }
     } catch(error) {
@@ -69,9 +71,10 @@ router.post('/', isLoggedIn, upload.single('image'), async (req, res) => {
     const location = data[0].formattedAddress;
 
     const store = await Store.create({ name, image, imageId, description, location, lat, lng, author, hours });
+    req.flash('success', 'Congratulation. Yue have created a new store!')
     res.redirect(`/stores/${store._id}`);
   } catch(error) {
-    console.log(error)
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -85,7 +88,7 @@ router.get('/:id', async (req, res) => {
     const apiKey = process.env.GEOCODER_API_KEY;
     res.render('stores/show', { store, apiKey });
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -94,9 +97,8 @@ router.get('/:id/edit', isLoggedIn, isStoreAuthor, async (req, res) => {
   try {
     const store = await Store.findById(req.params.id);
     res.render('stores/edit', { store });
-
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -127,15 +129,15 @@ router.put('/:id', isLoggedIn, isStoreAuthor, upload.single('image'), async (req
         store.image = imgPath.secure_url;
         store.imageId = imgPath.public_id;
       } catch(error) {
-        console.log(error);
+        req.flash('error', error.message);
         res.redirect('back');
       }
     }
     await store.save();
+    req.flash('success', 'Store updated.');
     res.redirect(`/stores/${req.params.id}`);
-
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
@@ -146,9 +148,10 @@ router.delete('/:id', isLoggedIn, isStoreAuthor, async (req, res) => {
     await cloudinary.v2.uploader.destroy(store.imageId);
     await Review.deleteMany({ _id: {$in: store.reviews}});
     await store.remove();
+    req.flash('success', 'Store successfully removed.')
     res.redirect('/stores');
   } catch(error) {
-    console.log(error);
+    req.flash('error', error.message);
     res.redirect('back');
   }
 });
