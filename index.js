@@ -1,9 +1,8 @@
 require('dotenv').config();
-// require('./data/db');
+require('./data/db');
 
 const express = require('express');
 const app = express();
-const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -17,19 +16,6 @@ const index = require('./routes/index');
 const stores = require('./routes/stores');
 const users = require('./routes/users');
 const reviews = require('./routes/reviews');
-
-const db_URI = process.env.DB_URI;
-
-mongoose.connect(db_URI, {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-  useCreateIndex: true
-});
-
-mongoose.connection.on('connected', () => console.log(`Mongoose connected`));
-mongoose.connection.on('disconnected', () => console.log('Mongoose disconnected'));
-mongoose.connection.on('error', error => console.error(`Mongoose connection error: ${error}`));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
