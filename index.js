@@ -3,7 +3,7 @@ require('./data/db');
 
 const express = require('express');
 const app = express();
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
