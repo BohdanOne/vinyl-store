@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const db_URI = process.env.DB_URI;
-
-mongoose.connect(db_URI, {
-  dbName: 'VinylStore',
+// const db_URI = process.env.DB_URI;
+// console.log(typeof db_URI);
+mongoose.connect('mongodb+srv://bohdan:YPQdhwTdvzLYpERu@vinylstore-uq1fr.mongodb.net/test?retryWrites=true&w=majority', {
+  // dbName: 'VinylStore',
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
