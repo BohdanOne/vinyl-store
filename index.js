@@ -46,6 +46,6 @@ app.use('/stores', stores);
 app.use('/users', users);
 app.use('/stores/:id/reviews', reviews);
 
-app.use(morgan('tiny'));
+// app.use(morgan('tiny'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, process.env.IP, () => console.log(`Vinyl Store server listening at ${PORT}`));
