@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
       if(review.author.id.equals(req.user._id)) {
         next();
       } else {
-        console.log('You can edit only your own reviews!');
+        req.flash('error', 'You can edit only your own reviews!');
         res.redirect('back');
       }
     }

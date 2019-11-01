@@ -1,5 +1,4 @@
 const Store = require('../models/store');
-const Review = require('../models/review');
 
 module.exports = async (req, res, next) => {
   try {
@@ -16,7 +15,6 @@ module.exports = async (req, res, next) => {
         next();
       }
     }
-
   } catch(error) {
     console.log(error);
     res.redirect('back');
