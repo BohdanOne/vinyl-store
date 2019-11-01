@@ -1,6 +1,11 @@
 # Vinyl Store
 
 Browse and add your favorite record stores.
+*Please note: Stores in database are fake ;)*
+
+**Live Demo: https://vinyl-store.herokuapp.com/**
+
+![App preview](https://res.cloudinary.com/bohdanonedev/image/upload/v1572020725/screen-shots_yiv5lm.png)
 
 ## User stories
 
@@ -9,7 +14,7 @@ Browse and add your favorite record stores.
 - create user account.
 
 ### Logged-in user can:
-- edit user profile;
+- edit & remove user profile;
 - see other users profiles;
 - add, edit and delete record stores;
 - add, edit and delete reviews.
