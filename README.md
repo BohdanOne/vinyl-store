@@ -5,8 +5,6 @@ Browse and add your favorite record stores.
 
 **Live Demo: https://vinyl-store.herokuapp.com/**
 
-![App preview](https://res.cloudinary.com/bohdanonedev/image/upload/v1572020725/screen-shots_yiv5lm.png)
-
 ## User stories
 
 ### User can:
